@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Todo, CreateRequest } from './Todo';
+import { Todo, CreateRequest, ProgressResponse } from './Todo';
 
 @Injectable({ providedIn: 'root' })
 export class TodoService {
-
   private baseUrl = 'http://localhost:8080/todos';
 
   constructor(private http: HttpClient) {}
@@ -24,5 +23,9 @@ export class TodoService {
 
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
+
+  getProgress(): Observable<ProgressResponse> {
+    return this.http.get<ProgressResponse>(`${this.baseUrl}/progress`);
   }
 }

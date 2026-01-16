@@ -1,5 +1,5 @@
-export type Status = "TODO" | "IN_PROGRESS" | "DONE" | "MISSED";
-export type Priority = "LOW" | "MEDIUM" | "HIGH";
+export type Status = 'TODO' | 'IN_PROGRESS' | 'DONE' | 'MISSED';
+export type Priority = 'LOW' | 'MEDIUM' | 'HIGH';
 
 export interface Todo {
   id: number;
@@ -18,7 +18,7 @@ export interface CreateRequest {
 }
 
 export interface UpdateRequest {
-  title: string;
+  title?: string;
   description?: string;
   status?: Status;
   priority?: Priority;

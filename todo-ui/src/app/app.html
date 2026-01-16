@@ -1,5 +1,21 @@
 <main class="container">
-  <h1>Todo App</h1>
+  <header class="header">
+    <h1>Todo App</h1>
+
+    @if (progress) {
+      <div class="progress-card">
+        <div class="progress-top">
+          <div class="progress-title">Progress</div>
+          <div class="progress-stats">
+            {{ progress.done }} / {{ progress.total }} ({{ progress.percentage }}%)
+          </div>
+        </div>
+        <div class="bar">
+          <div class="fill" [style.width.%]="progress.percentage"></div>
+        </div>
+      </div>
+    }
+  </header>
 
   <form #f="ngForm" (ngSubmit)="addTodo()" class="todo-form">
     <input
@@ -30,26 +46,42 @@
     <p class="empty">No tasks yet</p>
   }
 
-  @for (t of todos; track t.id) {
-    <div class="todo-item">
-      <div class="todo-text">
-        <strong>{{ t.title }}</strong>
-        <small>{{ t.description }}</small>
-      </div>
+  <section class="list">
+    @for (t of todos; track t.id) {
+      <div class="todo-item">
+        <div class="todo-text">
+          <div class="title-row">
+            <strong>{{ t.title }}</strong>
+            <span class="pill">{{ t.priority }}</span>
+          </div>
 
-      <div class="todo-actions">
-        <select
-          [(ngModel)]="t.status"
-          name="status-{{t.id}}"
-          (change)="updateTodo(t)"
-        >
-          @for (s of statuses; track s) {
-            <option [value]="s">{{ s }}</option>
+          @if (t.description) {
+            <small class="desc">{{ t.description }}</small>
           }
-        </select>
 
-        <button class="delete" (click)="deleteTodo(t.id)">✕</button>
+          <div class="meta">
+            @if (t.dueDate) {
+              <span class="due">Due: {{ t.dueDate | date:'mediumDate' }}</span>
+            } @else {
+              <span class="due muted">No due date</span>
+            }
+          </div>
+        </div>
+
+        <div class="todo-actions">
+          <select
+            [(ngModel)]="t.status"
+            name="status-{{t.id}}"
+            (change)="updateTodo(t)"
+          >
+            @for (s of statuses; track s) {
+              <option [value]="s">{{ s }}</option>
+            }
+          </select>
+
+          <button type="button" class="delete" (click)="deleteTodo(t.id)">✕</button>
+        </div>
       </div>
-    </div>
-  }
+    }
+  </section>
 </main>
