@@ -1,6 +1,7 @@
 package com.example.todo.controller;
 
 import com.example.todo.dto.CreateRequest;
+import com.example.todo.dto.ProgressResponse;
 import com.example.todo.dto.UpdateRequest;
 import com.example.todo.entity.Todo;
 import com.example.todo.service.TodoService;
@@ -41,4 +42,9 @@ public class TodoController {
     public void delete(@PathVariable Long id) {
         todoService.delete(id);
     }
+    @GetMapping("/progress")
+    public ProgressResponse progress() {
+        return todoService.getProgress();
+    }
+
 }

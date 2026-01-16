@@ -1,6 +1,7 @@
 package com.example.todo.service;
 
 import com.example.todo.dto.CreateRequest;
+import com.example.todo.dto.ProgressResponse;
 import com.example.todo.dto.UpdateRequest;
 import com.example.todo.entity.Status;
 import com.example.todo.entity.Todo;
@@ -35,12 +36,33 @@ public class TodoService {
         return repo.save(todo);
     }
     public List<Todo> findAll() {
-        return repo.findAll();
+        List<Todo> todos = repo.findAll();
+
+        boolean changed = false;
+        for (Todo todo : todos) {
+            Status before = todo.getStatus();
+            updateMissedStatus(todo);
+            if (before != todo.getStatus()) {
+                changed = true;
+            }
+        }
+        if (changed) {
+            repo.saveAll(todos);
+        }
+        return todos;
     }
+
     public Todo findById(Long id) {
-        return repo.findById(id)
+        Todo todo = repo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Todo not found: " + id));
+        Status before = todo.getStatus();
+        updateMissedStatus(todo);
+        if (before != todo.getStatus()) {
+            todo = repo.save(todo);
+        }
+        return todo;
     }
+
 
     public Todo update(Long id, UpdateRequest req) {
         Todo todo = findById(id);
@@ -57,4 +79,18 @@ public class TodoService {
         }
         repo.deleteById(id);
     }
+    public ProgressResponse getProgress() {
+        long total = repo.count();
+        if (total == 0) {
+            return new ProgressResponse(0, 0, 0);
+        }
+
+        long done = repo.findAll().stream()
+                .filter(t -> t.getStatus() == Status.DONE)
+                .count();
+
+        int percentage = (int) ((done * 100) / total);
+        return new ProgressResponse(total, done, percentage);
+    }
+
 }
