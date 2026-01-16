@@ -1,0 +1,55 @@
+<main class="container">
+  <h1>Todo App</h1>
+
+  <form #f="ngForm" (ngSubmit)="addTodo()" class="todo-form">
+    <input
+      name="title"
+      required
+      placeholder="Title"
+      [(ngModel)]="newTodo.title"
+    />
+
+    <input
+      name="description"
+      placeholder="Description"
+      [(ngModel)]="newTodo.description"
+    />
+
+    <select name="priority" [(ngModel)]="newTodo.priority">
+      @for (p of priorities; track p) {
+        <option [value]="p">{{ p }}</option>
+      }
+    </select>
+
+    <input type="date" name="dueDate" [(ngModel)]="newTodo.dueDate" />
+
+    <button type="submit" [disabled]="f.invalid">Add Task</button>
+  </form>
+
+  @if (todos.length === 0) {
+    <p class="empty">No tasks yet</p>
+  }
+
+  @for (t of todos; track t.id) {
+    <div class="todo-item">
+      <div class="todo-text">
+        <strong>{{ t.title }}</strong>
+        <small>{{ t.description }}</small>
+      </div>
+
+      <div class="todo-actions">
+        <select
+          [(ngModel)]="t.status"
+          name="status-{{t.id}}"
+          (change)="updateTodo(t)"
+        >
+          @for (s of statuses; track s) {
+            <option [value]="s">{{ s }}</option>
+          }
+        </select>
+
+        <button class="delete" (click)="deleteTodo(t.id)">✕</button>
+      </div>
+    </div>
+  }
+</main>
