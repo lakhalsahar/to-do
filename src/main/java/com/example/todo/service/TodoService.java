@@ -18,14 +18,7 @@ public class TodoService {
     public TodoService(TodoRepo repo) {
         this.repo = repo;
     }
-    private void updateMissedStatus(Todo todo) {
-        if (todo.getDueDate() != null
-                && todo.getStatus() != Status.DONE
-                && todo.getDueDate().isBefore(LocalDate.now())) {
 
-            todo.setStatus(Status.MISSED);
-        }
-    }
     public Todo create(CreateRequest req) {
         Todo todo = new Todo();
         todo.setTitle(req.getTitle());
