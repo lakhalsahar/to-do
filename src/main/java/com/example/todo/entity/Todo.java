@@ -29,6 +29,6 @@ public class Todo {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Priority priority = Priority.MEDIUM;
-
+    @Column
     private LocalDate dueDate;
 }
