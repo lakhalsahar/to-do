@@ -1,6 +1,6 @@
 HELP.md
-target/
-.mvn/wrapper/maven-wrapper.jar
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
@@ -31,3 +31,11 @@ build/
 
 ### VS Code ###
 .vscode/
+# Angular
+todo-ui/node_modules/
+todo-ui/.angular/
+todo-ui/dist/
+
+# Optional (editor)
+todo-ui/.vscode/
+
